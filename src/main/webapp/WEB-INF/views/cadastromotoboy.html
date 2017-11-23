@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Standard Meta -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<!-- Site Properties -->
+<title>Cadastrar Motoboy</title>
+<link rel="shortcut icon" th:href="@{/resources/imagens/logo.png}" type="image/x-png"/>
+
+<link rel="stylesheet" type="text/css" href="css/components/css.css"
+	th:href="@{/resources/css/components/css.css}">
+<script th:src="@{/resources/css/components/jquery.min.js}"></script>
+<script th:src="@{/resources/css/components/javaS.js}"></script>
+
+
+<style type="text/css">
+.ui.menu .active.item {
+	color: #fff;
+}
+
+.ui.menu .item {
+	color: #fff;
+}
+
+.ui.vertical.pointing.menu .active.item:after {
+	background-color: #c31215;
+}
+
+.ui.vertical.pointing.menu .item:after {
+	border-top: 1px solid #c31215;
+	border-right: 1px solid #c31215;
+}
+
+body {
+	background-color: #fff;
+}
+
+body>.grid {
+	height: 100%;
+}
+
+.column {
+	max-width: 800px;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #ce1316;
+}
+
+.ui.teal.header {
+	color: #ce1316 !important;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #ce1316;
+}
+
+.ui.large.top.fixed.hidden.menu {
+	background-color: #ce1316;
+	color: white;
+}
+
+.ui.large.top.fixed.hidden.menu * {
+	color: #FFF;
+}
+
+.ui.inverted.pointing.menu .active.item:after {
+	background: #b91114 !important;
+	margin: 0em !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+
+.upload {
+	width: 110px;
+	height: 70px;
+	background-repeat: no-repeat;
+	margin-left: 10px;
+}
+
+input[type=file] {
+	opacity: 0;
+	background-repeat: no-repeat;
+	width: 120px;
+	height: 120px;
+}
+
+.altimage {
+	width: 200px;
+	margin: 3%;
+}
+</style>
+
+<!--MASCARA DO CEP-->
+<script>
+          function mascara_cep() {
+          if(document.form.cep.value.length == 5) {
+          document.form.cep.value += '-';
+          }
+          }
+          
+
+           <!--MASCARA DO CPF--> 
+          function mascara_cpf() { 
+          if(document.form.cpf.value.length == 3) { 
+          document.form.cpf.value += '.'; 
+          } 
+          if(document.form.cpf.value.length == 7) {
+          document.form.cpf.value += '.'; 
+          }
+          if(document.form.cpf.value.length == 11) { 
+          document.form.cpf.value += '-'; 
+          }
+          }
+          
+           <!--MASCARA DO TELEFONE-->
+          function mascara_telefone() {
+          if(document.form.telefone.value.length == 2) {
+          document.form.telefone.value += ' ';
+          }
+          if(document.form.telefone.value.length == 7) {
+          document.form.telefone.value += '-';
+          }
+          }
+          
+<!-- Adicionando Javascript -->
+    
+    function limpa_formulário_cep() {
+            //Limpa valores do formulário de cep.
+            document.getElementById('rua').value=("");
+            document.getElementById('bairro').value=("");
+            document.getElementById('cidade').value=("");
+            document.getElementById('uf').value=("");
+            
+    }
+
+    function meu_callback(conteudo) {
+        if (!("erro" in conteudo)) {
+            //Atualiza os campos com os valores.
+            document.getElementById('rua').value=(conteudo.logradouro);
+            document.getElementById('bairro').value=(conteudo.bairro);
+            document.getElementById('cidade').value=(conteudo.localidade);
+            document.getElementById('uf').value=(conteudo.uf);
+            
+        } //end if.
+        else {
+            //CEP não Encontrado.
+            limpa_formulário_cep();
+            alert("CEP não encontrado.");
+        }
+    }
+        
+    function pesquisacep(valor) {
+
+        //Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if(validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById('rua').value="...";
+                document.getElementById('bairro').value="...";
+                document.getElementById('cidade').value="...";
+                document.getElementById('uf').value="...";
+                
+
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                script.src = '//viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep();
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep();
+        }
+    };
+
+    $(document).ready(function(){
+        $('#telefone').mask('(00) 0000-00009');
+    });
+    </script>
+
+<script>
+	function mascara(t, mask) {
+	  
+		var i = t.value.length;
+		var saida = mask.substring(1, 0);
+		var texto = mask.substring(i)
+		if (texto.substring(0, 1) != saida) {
+			t.value += texto.substring(0, 1);
+		}
+	}
+</script>
+	<script>
+		function tecla() {
+			evt = window.event;
+			var tecla = evt.keyCode;
+
+			if (tecla < 47 || tecla > 58) {
+				evt.preventDefault();
+			}
+		}
+	</script>
+
+
+</head>
+<body style="height: 100%; overflow: hidden; padding-top: 0.1px;">
+
+
+	<div
+		style="float: left; height: 100%; background-color: #ce1316; color: #fff; position: relative;"
+		class="ui red inverted vertical pointing menu">
+
+		<h2 style="padding: 3%;">
+			<img th:src="@{/resources/imagens/logo.png}"
+				style="margin-bottom: -18px; margin-right: 17px; width: 60px; height: 60px;">DevFast
+		</h2>
+
+
+		<a class="item " th:href="@{cadastroRestaurante}"> Cadastrar
+			Restaurante </a> <a class="item active" th:href="@{cadastroMotoboy}">
+			Cadastrar Motoboy </a> <a class="item " th:href="@{motoboys}">
+			Motoboys </a> <a class="item " th:href="@{admRestaurante}">
+			Restaurantes </a> <a class="item " th:href="@{dash}"> Dashboard </a> <a
+			class="item " style="position: absolute; bottom: 0.4%;" th:href="@{../sair}"><i
+			style="margin-left: 149px;" class="sign out icon"></i> Sair </a>
+
+
+
+
+
+	</div>
+
+
+	<div class="ui middle aligned center aligned grid"
+		style="position: relative; padding-top: 2%; max-height: 100%; font-size: larger; overflow: scroll; max-height: 100%; overflow-x: hidden;">
+		<div class="caixa"
+			style="width: 100%; max-width: 800px; box-sizing: inherit; text-align: center; margin-bottom: 10px;">
+			<h2 class="ui teal image header">Cadastro de Motoboy</h2>
+			<form th:action="@{novoMotoboy}" th:object="${motoboy}" method="post"
+				class="ui large form">
+				<div class="ui stacked segment">
+
+					<input id="testando00" type="hidden" name="idMotoboy"
+						placeholder="ID" th:field="*{idMotoboy}"
+						th:value="${motoboy.idMotoboy}" />
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="user icon"></i> <input type="text" name="nome"
+								placeholder="Nome" maxlength="99" required="" th:field="*{nome}" />
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="call icon"></i> <input type="text"
+								onKeyPress="tecla(), mascara(this, '## #####-####')" maxlength="13"
+								   name="telefone"
+								placeholder="Telefone" required="" th:field="*{telefone}">
+
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="mail icon"></i> <input type="email" name="email"
+								placeholder="E-mail" maxlength="100" required=""
+								th:field="*{login.email}">
+						</div>
+					</div>
+
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="lock icon"></i> <input type="password" name="password"
+								placeholder="Senha" maxlength="8" required=""
+								th:field="*{login.senha}">
+						</div>
+					</div>
+
+
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="address card outline icon"></i> <input type="text"
+								name="cpf" placeholder="CPF" onKeyPress="tecla(), mascara(this, '###.###.###-##')" maxlength="14" required=""
+							
+								th:field="*{cpf}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="marker icon"></i> <input type="text" id="cep"
+								name="cep" placeholder="CEP" onKeyPress="tecla(), mascara(this, '#####-###')"
+								maxlength="9" onblur="pesquisacep(this.value);" required=""
+								th:field="*{endereco.cep}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="home icon"></i> <input type="text" id="rua"
+								name="logradouro" placeholder="Logradouro" readonly="readonly"
+								required="" th:field="*{endereco.logradouro}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="map icon"></i> <input type="text" id="numero"
+								name="numero" placeholder="Número" maxlength="8" required=""
+								th:field="*{endereco.numero}">
+						</div>
+					</div>
+
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="location arrow icon"></i> <input type="text"
+								id="complemento" name="complemento" maxlength="80"
+								placeholder="Complemento" required=""
+								th:field="*{endereco.complemento}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="building icon"></i> <input type="text" id="cidade"
+								placeholder="Cidade" name="cidade" readonly="readonly"
+								required="" th:field="*{endereco.cidade}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="world icon"></i> <input type="text" id="uf"
+								placeholder="Estado" name="estado" readonly="readonly"
+								required="" th:field="*{endereco.estado}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="building outline icon"></i> <input type="text"
+								id="bairro" placeholder="Bairro" name="bairro"
+								readonly="readonly" required="" th:field="*{endereco.bairro}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="
+             address card icon"></i> <input
+								type="number" name="cnh" placeholder="CNH"
+								oninput="if(value.length>11)value=value.slice(0,11)" required=""
+								th:field="*{cnh}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="
+              motorcycle icon"></i> <input
+								type="text" name="moto" placeholder="Moto" maxlength="20"
+								required="" th:field="*{moto.modelo}">
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="
+              bicycle icon"></i> <input type="text"
+								name="marca" placeholder="Marca" maxlength="15" required=""
+								th:field="*{moto.marca}">
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="
+              calendar icon"></i> <input
+								type="number" name="ano" placeholder="Ano" required=""
+								oninput="if(value.length>4)value=value.slice(0,4)"
+								th:field="*{moto.ano}">
+						</div>
+					</div>
+
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="
+             paint brush icon"></i> <input
+								type="text" name="cor" maxlength="15" placeholder="Cor"
+								required="" th:field="*{moto.cor}">
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui left icon input">
+							<i class="
+             window maximize icon"></i> <input
+								type="text" onKeyPress="mascara(this, '###-####')" name="placa" maxlength="8" placeholder="Placa"
+								required="" th:field="*{moto.placa}">
+						</div>
+					</div>
+
+					<input id="arquivo" type="file" hidden="hidden"
+						th:field="*{arquivo}" th:src='@{/resources/imagens/foto.png}'>
+					<input type="submit" value="Cadastrar"
+						class="ui fluid large teal submit button" required>
+				</div>
+
+
+			</form>
+
+		</div>
+	</div>
+
+
+</body>
+
+</html>

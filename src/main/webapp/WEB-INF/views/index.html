@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Standard Meta -->
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<!-- Site Properties -->
+<title>Pedidos</title>
+
+
+<link th:href="@{http://fonts.googleapis.com/css?family=Open+Sans:600}"
+	type="text/css" rel="stylesheet" />
+
+<link rel="shortcut icon" th:href="@{/resources/imagens/logo.png}"
+	type="image/x-png" />
+
+<link rel="stylesheet" type="text/css" href="css/components/css.css"
+	th:href="@{/resources/css/components/css.css}">
+
+<script type="text/javascript"
+	th:src="@{/resources/css/components/jquery.min.js}"></script>
+
+<script th:src="@{/resources/css/components/style.js}">
+	
+</script>
+
+<script type="text/javascript"
+	th:src="@{http://maps.googleapis.com/maps/api/js?key=AIzaSyDO1FTggYSWTvaz5wc185SWdkt005UEaPc}"></script>
+
+<script type="text/javascript"
+	th:src="@{/resources/css/components/mapa.js}"></script>
+
+<script th:src="@{/resources/css/components/javaS.js}"></script>
+
+<style type="text/css">
+.ui.menu .active.item {
+	color: #fff;
+}
+
+.ui.menu .item {
+	color: #fff;
+}
+
+.ui.vertical.pointing.menu .active.item:after {
+	background-color: #c31215;
+}
+
+.ui.vertical.pointing.menu .item:after {
+	border-top: 1px solid #c31215;
+	border-right: 1px solid #c31215;
+	background-color: #c31215;
+}
+
+.ui.inverted.pointing.menu .active.item:after {
+	background: #b91114 !important;
+	margin: 0em !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+
+.ui.segment {
+	box-shadow: none;
+	padding: none;
+	border-radius: none;
+	border: none;
+}
+
+body {
+	background-color: #fff;
+}
+
+body>.grid {
+	height: 100%;
+}
+
+.column {
+	max-width: 800px;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #ce1316;
+}
+
+.ui.teal.header {
+	color: #ce1316 !important;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #ce1316;
+}
+
+.ui.large.top.fixed.hidden.menu {
+	background-color: #ce1316;
+	color: white;
+}
+
+.ui.large.top.fixed.hidden.menu * {
+	color: #FFF;
+}
+
+.ui.inverted.pointing.menu .active.item:after {
+	background: #b91114 !important;
+	margin: 0em !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+
+.ui.form .field>label {
+	float: left;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #d11f22;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #d11f22;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #d11f22;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #d11f22 !important;
+}
+</style>
+<script>
+	function mascara(t, mask) {
+	  
+		var i = t.value.length;
+		var saida = mask.substring(1, 0);
+		var texto = mask.substring(i)
+		if (texto.substring(0, 1) != saida) {
+			t.value += texto.substring(0, 1);
+		}
+	}
+</script>
+<script>
+		function tecla() {
+			evt = window.event;
+			var tecla = evt.keyCode;
+
+			if (tecla < 47 || tecla > 58) {
+				evt.preventDefault();
+			}
+		}
+	</script>
+
+
+<script>
+
+	function passaValores(){
+		
+		var lat = $("#latitude");
+		var lng = $("#longitude");
+		
+		if(teste != undefined){
+		
+		lat[0].value = teste[0].geometry.location.lat();
+
+		lng[0].value = 	teste[0].geometry.location.lng();
+		
+		}
+		
+	}
+	
+
+</script>
+
+
+</head>
+<body style="height: 100%; overflow: hidden;">
+
+	<div style="height: 100%">
+		<div
+			style="float: left; position: relative; height: 100%; background-color: #ce1316; color: #fff;"
+			class="ui red inverted vertical pointing menu">
+			<h2 style="padding: 3%;">
+				<img th:src="@{/resources/imagens/logo.png}"
+					style="margin-bottom: -18px; margin-right: 17px; width: 60px; height: 60px;">DevFast
+			</h2>
+
+			<a class="item active" th:href="@{entrega}"> Pedido </a> <a
+				class="item" th:href="@{monitoramento}"> Acompanhamento </a> <a
+				class="item" th:href="@{historicoEntrega}"> Histórico </a> <a
+				class="item " th:href="@{motoboys}"> Motoboys </a> <a class="item "
+				style="position: absolute; bottom: 0.4%;" th:href="@{../sair}"><i
+				style="margin-left: 149px;" class="sign out icon"></i> Sair </a>
+
+		</div>
+
+		<div style="height: 100%; margin-left: 230px;">
+			<div id="mapa"
+				style="float: right; height: 100%; width: 47%; position: relative;"></div>
+			<div class="caixaPai"
+				style="width: 53%; padding-top: 3%; overflow: scroll; height: 100%; overflow-x: hidden; position: relative;">
+				<div class="caixaFilho"
+					style="width: 100%; padding-left: 8%; padding-right: 9%;">
+
+					<input type="hidden" th:object="${restaurante}" />
+					<form th:action="@{novaEntrega}" th:object="${entrega}"
+						class="ui form"
+						style="border-top: 1px solid red; padding-top: 5%;" method="post">
+
+						<input type="hidden" th:field="*{restaurante.idRestaurante}">
+
+
+						<div class="field">
+							<label>Endereco</label> <input id="txtEndereco" required=""
+								type="text" th:field="*{endereco.logradouro}">
+						</div>
+
+						<div class="field">
+							<label>Complemento</label> <input type="text" required=""
+								maxlength="80" name="last-name"
+								th:field="*{endereco.complemento}">
+						</div>
+
+						<div
+							style="border-top: 1px solid red; padding-top: 5%; margin-top: 5%;">
+							<div class="field">
+								<label>Nome</label> <input type="text" maxlength="99"
+									required="" name="name" th:field="*{nomeCliente}">
+							</div>
+							<div class="field">
+								<label>Telefone</label> <input type="text"
+									onKeyPress="tecla(), mascara(this, '## #####-####')"
+									maxlength="13" required="" th:field="*{telefoneCliente}">
+							</div>
+
+						</div>
+						<div
+							style="border-top: 1px solid red; padding-top: 5%; margin-top: 5%;">
+							<div class="field">
+								<label>Produto</label> <input type="text" maxlength="99"
+									required="" name="last-name" th:field="*{descricao}">
+							</div>
+
+							<div class="two fields">
+
+								<div class="field">
+									<label>Preço</label> <input type="text" name="valor"
+										th:field="*{valorTotal}">
+								</div>
+
+								<div class="field">
+									<label>Temperatura</label> <select th:field="*{temperatura}"
+										class="ui fluid dropdown">
+										<option th:value="QUENTE">Quente</option>
+										<option th:value="AMBIENTE">Ambiente</option>
+										<option th:value="FRIO">Fria</option>
+
+									</select>
+								</div>
+							</div>
+
+							<div class="two fields">
+								<div class="field">
+									<label>Tamanho</label> <select th:field="*{tamanho}"
+										class="ui fluid dropdown">
+										<option th:value="GRANDE">Grande</option>
+										<option th:value="MEDIO">Medio</option>
+										<option th:value="PEQUENO">Pequena</option>
+
+									</select>
+								</div>
+
+								<div class="field">
+									<label>Fragilidade</label> <select th:field="*{fragilidade}"
+										class="ui fluid dropdown">
+										<option th:value="RESISTENTE">Resistente</option>
+										<option th:value="FRAGIL">Fragio</option>
+										<option th:value="MUITOFRAGIL">Muito fragio</option>
+
+
+									</select>
+								</div>
+
+
+
+								<input type="hidden" required="" name="latitude"
+									th:field="*{endereco.latitude}" id="latitude"> <input
+									type="hidden" required="" name="longitude"
+									th:field="*{endereco.longitude}" id="longitude">
+
+
+
+
+
+							</div>
+
+							<input onmouseenter="passaValores()" type="submit"
+								value="Cadastrar" class="ui fluid large teal submit button"
+								required style="margin-top: 20%;" /><br /> <br /> <br />
+						</div>
+					</form>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</body>
+
+</html>

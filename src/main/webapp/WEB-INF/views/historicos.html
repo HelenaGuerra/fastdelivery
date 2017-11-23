@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <!-- Site Properties -->
+  <title>Historico</title>
+  <link rel="shortcut icon" th:href="@{/resources/imagens/logo.png}" type="image/x-png"/>
+     <link rel="stylesheet" type="text/css" href="css/components/css.css" th:href="@{/resources/css/components/css.css}">
+  <script  th:src="@{/resources/css/components/jquery.min.js}"></script>
+  <script th:src="@{/resources/css/components/javaS.js}"></script>
+  
+  
+  
+  <style type="text/css">
+	.ui.menu .active.item{
+	color:#fff;
+	}
+	.ui.menu .item{
+		color:#fff;
+	}
+	.ui.vertical.pointing.menu .active.item:after {
+    background-color: #c31215;
+}.ui.vertical.pointing.menu .item:after {
+   
+    border-top: 1px solid #c31215;
+    border-right: 1px solid #c31215;
+	background-color: #c31215;
+}
+ 
+ .ui.inverted.pointing.menu .active.item:after {
+    background: #b91114 !important;
+    margin: 0em !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+  </style>
+ 
+</head>
+<body style="height:100%;  overflow: hidden;">
+
+<div style="height:100%">
+<div style="float:left;position:relative; height:100%;background-color:#ce1316; color:#fff;"  class="ui red inverted vertical pointing menu" >
+ <h2 style="padding :3%; "><img th:src="@{/resources/imagens/logo.png}" style="margin-bottom: -18px; margin-right: 17px; width: 60px; height: 60px;">DevFast</h2> 
+
+ <a class="item " th:href="@{entrega}">
+    Pedido
+  </a>
+   <a class="item" th:href="@{monitoramento}">
+    Acompanhamento
+  </a>
+  <a class="item active" th:href="@{historicoEntrega}">
+    Histórico
+  </a>
+  <a class="item " th:href="@{motoboys}">
+    Motoboys
+  </a>
+   
+   <a class="item " style="position :absolute; bottom :0.4%;" th:href="@{../sair}"><i style="margin-left: 149px;" class="sign out icon" ></i>
+    Sair
+  </a>  
+
+</div>
+<div class="ui middle aligned center aligned grid" style="max-width: 100%; margin-top:-0.1px;padding:5%;overflow: scroll;max-height: 100%; overflow-x:hidden;">
+ <table class="ui inverted red table" >
+  <thead >
+    <tr><th>Produto</th>
+        <th>Cliente</th>
+  		<th>Telefone</th>
+		<th>Valor</th>
+  </tr></thead><tbody>
+    <tr th:each="historico : ${his}">
+      <td th:text="${historico.entrega.descricao}"></td>
+      <td th:text="${historico.entrega.nomeCliente}"></td>
+      <td th:text="${historico.entrega.telefoneCliente}"></td>
+<td th:text="${historico.entrega.valorTotal}"></td>
+
+     
+	  
+    </tr>
+  </tbody>
+</table>
+ 
+</div>
+ </div>
+</body>
+
+</html>

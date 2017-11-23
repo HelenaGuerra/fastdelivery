@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Standard Meta -->
+<meta th:charset="utf-8" />
+<!-- Site Properties -->
+<title>DevFast</title>
+<link rel="shortcut icon" th:href="@{/resources/imagens/logo.png}"
+	type="image/x-png" />
+
+<link rel="stylesheet" type="text/css" href="css/components/css.css"
+	th:href="@{/resources/css/components/css.css}">
+<script th:src="@{/resources/css/components/jquery.min.js}"></script>
+<script th:src="@{/resources/css/components/javaS.js}"></script>
+
+
+
+<style type="text/css">
+.login-conterner {
+	background-image: url('resources/imagens/moto.png');
+	bottom: 0;
+	left: 0;
+	padding: 3em;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 0;
+	background-size: cover;
+}
+
+.column {
+	max-width: 450px;
+}
+
+.ui.teal.header {
+	color: #ce1316 !important;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #ce1316;
+}
+
+.ui.teal.header {
+	color: #ce1316 !important;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #ce1316;
+}
+
+.ui.segment {
+	background: none;
+	box-shadow: none;
+	border: none;
+}
+
+.ui.stacked.segments:before, .ui.stacked.segments:after, .ui.stacked.segment:before,
+	.ui.stacked.segment:after {
+	content: none;
+}
+
+.ui.message {
+	background: none;
+	box-shadow: none;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #d11f22;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #d11f22;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #d11f22;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #d11f22 !important;
+}
+
+.ui.message .list:not (.ui ) li:before {
+	content: close-quote !important;
+}
+</style>
+<script>
+	$(document).ready(function() {
+		$('.ui.form').form({
+			fields : {
+				email : {
+					identifier : 'email',
+					rules : [ {
+						type : 'empty',
+						prompt : 'Por favor introduza o seu e-mail'
+					}, {
+						type : 'email',
+						prompt : 'Por favor digite um email válido'
+					} ]
+				},
+				password : {
+					identifier : 'password',
+					rules : [ {
+						type : 'empty',
+						prompt : 'Por favor insira sua senha'
+					}, {
+						type : 'length[0]',
+						prompt : 'Sua senha deve ter no mínimo 6 caracteres'
+					} ]
+				}
+			}
+		});
+	});
+
+	$(function() {
+		$("#test").click(function() {
+			$(".test").modal('show');
+		});
+		$(".test").modal({
+			closable : true
+		});
+	});
+
+	function confirma() {
+		$('#txtEmail').attr('autocomplete', 'off');
+
+		if ($('#txtSenha').val() != $('#txtSenhaConfirme').val()) {
+			alert('Senhas diferentes');
+			return false;
+		}
+	};
+</script>
+</head>
+<body>
+	<div class="login-conterner">
+		<div class="row"
+			style="border-left: 3px solid red; height: 100%; width: 35%; float: right;">
+
+
+			<div class="ui middle aligned center aligned grid"
+				style="margin-top: 40%; margin-right: -15%;">
+				<div class="column">
+
+
+					<div class="content">
+						<h2 class="ui teal image header">Login</h2>
+					</div>
+
+
+					<form th:action="@{logar}" th:object="${login}" method="post"
+						class="ui large form">
+
+						<div class="ui stacked segment">
+							<div class="field">
+								<div class="ui left icon input">
+									<i class="user icon"></i> <input type="text" name="email"
+										placeholder="E-mail" th:field="*{email}">
+								</div>
+							</div>
+							<div class="field">
+								<div class="ui left icon input">
+									<i class="lock icon"></i> <input type="password"
+										name="password" placeholder="Senha" th:field="*{senha}">
+								</div>
+							</div>
+
+
+							<input type="hidden" value="teste" th:field="*{token}"> <input
+								type="submit" value="Login"
+								class="ui fluid large teal submit button" required />
+
+						</div>
+
+						<div class="ui error message"></div>
+
+					</form>
+
+					<div class="ui message">
+						<a href="#" style="color: #fff; font-size: 16px;" id="test">Esqueceu
+							a senha?</a>
+					</div>
+					<div class="ui modal test">
+
+						<div class="header">Recuperar senha</div>
+
+
+						<form th:action="@{esqueceuASenha}" th:object="${restaurante}"
+							method="post" class="ui large form">
+
+
+							<div class="ui stacked segment">
+								<!--  style="border-bottom: 1px solid #dededf;"-->
+								<div class="field">
+									<div class="ui left icon input">
+										<i class="address card outline icon"></i> <input type="text"
+											name="text" placeholder="CNPJ" th:field="*{cnpj}">
+									</div>
+								</div>
+
+
+								<div class="field">
+									<div class="ui left icon input">
+										<i class="lock icon"></i> <input type="password"
+											name="password" th:field="*{login.senha}" id="txtSenha"
+											placeholder="Nova Senha">
+									</div>
+								</div>
+
+
+								<div class="field">
+									<div class="ui left icon input">
+										<i class="lock icon"></i> <input type="password"
+											name="password" id="txtSenhaConfirme"
+											placeholder="Confimar Senha">
+									</div>
+								</div>
+							</div>
+
+							<div class="ui error message"></div>
+
+
+							<input type="submit" value="Enviar"
+								style="width: 100%; max-width: 118px; float: right; margin-bottom: 18px; margin-right: 14px; margin-top: 15px; height: 36px;"
+								class="ui fluid large teal submit button" onclick="confirma()"
+								required />
+
+
+						</form>
+						<div class="actions">
+							<div class="ui black deny button"
+								style="float: right; margin-bottom: 15px;">Sair</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

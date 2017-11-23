@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Standard Meta -->
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<!-- Site Properties -->
+<title>Motoboys</title>
+<link rel="shortcut icon" th:href="@{/resources/imagens/logo.png}" type="image/x-png"/>
+<link rel="stylesheet" type="text/css" href="css/components/css.css"
+	th:href="@{/resources/css/components/css.css}">
+<script th:src="@{/resources/css/components/jquery.min.js}"></script>
+<script th:src="@{/resources/css/components/javaS.js}"></script>
+
+<style type="text/css">
+.ui.menu .active.item {
+	color: #fff;
+}
+
+.ui.menu .item {
+	color: #fff;
+}
+
+.ui.vertical.pointing.menu .active.item:after {
+	background-color: #c31215;
+}
+
+.ui.vertical.pointing.menu .item:after {
+	border-top: 1px solid #c31215;
+	border-right: 1px solid #c31215;
+}
+
+.item list {
+	margin-bottom: 50px;
+}
+
+.ul.ui.list ul, ol.ui.list ol, .ui.list .list {
+	padding: 0.75em 0em 1.25em 0.5em;
+}
+
+.ui.grid {
+	display: flow-root;
+}
+</style>
+
+<style type="text/css">
+body {
+	background-color: #fff;
+}
+
+body>.grid {
+	height: 100%;
+}
+
+.column {
+	max-width: 800px;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #ce1316;
+}
+
+.ui.teal.header {
+	color: #ce1316 !important;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #ce1316;
+}
+
+.ui.large.top.fixed.hidden.menu {
+	background-color: #ce1316;
+	color: white;
+}
+
+.ui.large.top.fixed.hidden.menu * {
+	color: #FFF;
+}
+
+.ui.inverted.pointing.menu .active.item:after {
+	background: #b91114 !important;
+	margin: 0em !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+
+.ui.list .list>.item a.header:hover, .ui.list>.item a.header:hover {
+	color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.ui.list .list>.item a.header, .ui.list>.item a.header {
+	cursor: pointer;
+	color: rgba(0, 0, 0, 0.87) !important;
+}
+</style>
+
+
+<script>
+	var editar;
+	var excluir;
+	var cont = 0;
+	var hrefEditar;
+	var hrefExcluir;
+	var teste;
+	var spanExcluir;
+
+	function modal(id) {
+
+		var nome = document.getElementById('nomeModal');
+		var email = document.getElementById('emailModal');
+		var telefone = document.getElementById('telefoneModal');
+		var endereco = document.getElementById('enderecoModal');
+		var moto = document.getElementById('motoModal');
+		var placa = document.getElementById('placaModal');
+		var ano = document.getElementById('anoModal');
+		var cor = document.getElementById('corModal');
+		var status = document.getElementById('statusModal');
+		var idM = document.getElementById('idModal');
+		var idButtonEditar = document.getElementsByClassName("Editar");
+		spanExcluir = $('#spanExcluir');
+
+		editar = $('.Editar');
+		excluir = $('.Excluir');
+
+		fetch("http://192.168.3.13/FastDelivery/motoboy/" + id).then(
+				function(resp) {
+					resp.json().then(function(json) {
+
+						teste = json;
+
+						console.log(nome);
+
+						nome.textContent = json.nome;
+						email.textContent = json.login.email;
+						telefone.textContent = json.telefone;
+
+						endereco.textContent = "" + json.endereco.logradouro;
+						endereco.textContent += ", " + json.endereco.numero;
+						endereco.textContent += " - " + json.endereco.bairro;
+						endereco.textContent += ", " + json.endereco.cidade;
+						endereco.textContent += " - " + json.endereco.estado;
+
+						moto.textContent = json.moto.modelo;
+						placa.textContent = json.moto.placa;
+						ano.textContent = json.moto.ano;
+						cor.textContent = json.moto.cor;
+						status.textContent = json.status;
+
+						idM.value = json.idMotoboy;
+						idButtonEditar.id = json.idMotoboy;
+
+						if (teste.status != "DESATIVADO") {
+
+							spanExcluir[0].textContent = "Desativar";
+
+							console.log("textContent");
+
+							console.log(spanExcluir.textContent);
+
+							console.log("segundo teste ");
+						} else {
+
+							spanExcluir[0].textContent = "Ativar";
+
+						}
+
+						editar[0].id = json.idMotoboy;
+						excluir[0].id = json.idMotoboy;
+
+						if (cont == 0) {
+
+							hrefEditar = editar[0].href;
+
+							hrefExcluir = excluir[0].href;
+
+							cont++;
+
+						}
+
+						editar[0].href = hrefEditar;
+
+						editar[0].href += json.idMotoboy;
+
+						excluir[0].href = hrefExcluir;
+
+						excluir[0].href += json.idMotoboy;
+
+						cont++;
+
+					});
+				});
+
+		$(".test").modal('show', {
+			closable : true
+		});
+
+	};
+</script>
+
+
+
+</head>
+<body style="height: 100%; overflow: hidden; padding-top: 0.1px;">
+
+
+	<div
+		style="float: left; height: 100%; background-color: #ce1316; color: #fff; position: relative;"
+		class="ui red inverted vertical pointing menu">
+
+		<h2 style="padding: 3%;">
+			<img th:src="@{/resources/imagens/logo.png}"
+				style="margin-bottom: -18px; margin-right: 17px; width: 60px; height: 60px;">DevFast
+		</h2>
+
+
+		<a class="item " th:href="@{cadastroRestaurante}"> Cadastrar
+			Restaurante </a> <a class="item" th:href="@{cadastroMotoboy}">
+			Cadastrar Motoboy </a> <a class="item active" th:href="@{motoboys}">
+			Motoboys </a> <a class="item " th:href="@{admRestaurante}">
+			Restaurantes </a> <a class="item " th:href="@{dash}"> Dashboard </a> <a
+			class="item " style="position: absolute; bottom: 0.4%;"
+			th:href="@{../sair}"><i style="margin-left: 149px;"
+			class="sign out icon"></i> Sair </a>
+
+
+
+
+	</div>
+
+
+
+	<div class="ui middle aligned center aligned grid"
+		style="margin-top: -0.1px; padding: 5%; max-height: 100%; font-size: larger; overflow: scroll; max-height: 100%; overflow-x: hidden;">
+		<div class="ui middle aligned divided list" style="width: 100%;">
+
+			<h2 style="margin-bottom: 31px; color: #ce1316;">Ativados</h2>
+			<div class="item list" th:each="motoboy : ${motA}">
+				<img class="ui avatar image"
+					th:src="@{/resources/imagens/capacete.gif}">
+				<div class="content">
+					<a th:id="${motoboy.idMotoboy}" class="header"
+						th:text='${motoboy.nome}' onclick="modal(id)"> </a>
+
+				</div>
+
+			</div>
+
+
+
+
+
+			<h2 style="margin-bottom: 31px; color: #ce1316;">Desativados</h2>
+			<div class="item list" th:each="motoboy : ${motD}">
+				<img class="ui avatar image"
+					th:src="@{/resources/imagens/capacete.gif}">
+				<div class="content">
+					<a th:id="${motoboy.idMotoboy}" class="header"
+						th:text='${motoboy.nome}' onclick="modal(id)"> </a>
+
+				</div>
+
+			</div>
+
+
+			<div class="ui modal test">
+				
+		
+			
+				<div class="header"></div>
+				
+				<div class="image content">
+
+					<div class="ui medium image">
+						<img th:src="@{/resources/imagens/capacete.gif}">
+					</div>
+
+					<div class="description">
+
+						<div class="field">
+							<input type="hidden" id="idModal" name="idModal">
+						</div>
+
+						<div class="ui header">
+							Nome: <span id="nomeModal"></span>
+						</div>
+						<p>
+							E-mail: <span id="emailModal"></span>
+						</p>
+						<p>
+							Telefone: <span id="telefoneModal"></span>
+						</p>
+						<p>
+							Endereço: <span id="enderecoModal"></span>
+						</p>
+
+						<div class="ui header">
+							Moto: <span id="motoModal"></span>
+						</div>
+						<p>
+							Placa: <span id="placaModal"></span>
+						</p>
+						<p>
+							Ano: <span id="anoModal"></span>
+						</p>
+						<p>
+							Cor: <span id="corModal"></span>
+						</p>
+
+						<p hidden="hidden">
+							status: <span id="statusModal"></span>
+						</p>
+
+
+					</div>
+
+				</div>
+				<div class="actions">
+
+
+					<a th:id="hue" th:href="@{editaMotoboy/}" class="Editar"
+						style="color: #fff;">
+						<button class="ui red button" style="float: right;">Editar</button>
+					</a> <a th:id="hue" th:href="@{excluirMotoboy/}" class="Excluir"
+						style="color: #fff;">
+						<button class="ui red button"
+							style="float: right; margin-bottom: 18px;">
+							<span id="spanExcluir"> </span>
+						</button>
+					</a>
+
+	<div class="ui black deny button" style="float: left;">
+      Sair
+    </div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+
+</body>
+
+</html>

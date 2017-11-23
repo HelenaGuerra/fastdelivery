@@ -1,0 +1,68 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+	<display-name>Archetype Created Web Application</display-name>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>FastDelivery</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value></param-value>
+		</init-param>
+		<load-on-startup>10</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FastDelivery</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	
+		 <error-page>  
+    <error-code>400</error-code>  
+    <location>/administrador/400</location>  
+	</error-page>
+	
+		<error-page>  
+    <error-code>403</error-code>  
+    <location>/administrador/403</location>  
+	</error-page>
+	
+	<error-page>  
+    <error-code>404</error-code>  
+    <location>/administrador/404</location>  
+	</error-page>
+  
+
+<error-page>  
+    <error-code>405</error-code>  
+    <location>/administrador/405</location>  
+</error-page>
+
+
+<error-page>  
+    <error-code>415</error-code>  
+    <location>/administrador/415</location>  
+</error-page>
+
+	<error-page>  
+    <error-code>500</error-code>  
+    <location>/administrador/500</location>  
+	</error-page>
+	
+	
+	
+</web-app>
+	

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Standard Meta -->
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<!-- Site Properties -->
+<title>Dashboard</title>
+<link rel="shortcut icon" th:href="@{/resources/imagens/logo.png}" type="image/x-png"/>
+<link rel="stylesheet" type="text/css" href="css/components/css.css"
+	th:href="@{/resources/css/components/css.css}">
+<script th:src="@{/resources/css/components/jquery.min.js}"></script>
+<script th:src="@{/resources/css/components/javaS.js}"></script>
+
+
+
+
+
+
+<style type="text/css">
+.ui.menu .active.item {
+	color: #fff;
+}
+
+.ui.menu .item {
+	color: #fff;
+}
+
+.ui.vertical.pointing.menu .active.item:after {
+	background-color: #c31215;
+}
+
+.ui.vertical.pointing.menu .item:after {
+	border-top: 1px solid #c31215;
+	border-right: 1px solid #c31215;
+}
+</style>
+
+<style type="text/css">
+body {
+	background-color: #fff;
+}
+
+body>.grid {
+	height: 100%;
+}
+
+.column {
+	max-width: 800px;
+}
+
+.ui.teal.buttons .button, .ui.teal.button {
+	background-color: #ce1316;
+}
+
+.ui.teal.header {
+	color: #ce1316 !important;
+}
+
+.ui.teal.buttons .button:hover, .ui.teal.button:hover {
+	background-color: #ce1316;
+}
+
+.ui.large.top.fixed.hidden.menu {
+	background-color: #ce1316;
+	color: white;
+}
+
+.ui.large.top.fixed.hidden.menu * {
+	color: #FFF;
+}
+
+.ui.inverted.pointing.menu .active.item:after {
+	background: #b91114 !important;
+	margin: 0em !important;
+	box-shadow: none !important;
+	border: none !important;
+}
+
+.ui.cards>.card>.image>img, .ui.card>.image>img {
+	padding: 10%;
+}
+
+.ui.cards a.card, .ui.link.cards .card, a.ui.card, .ui.link.card {
+	padding: 1%;
+}
+
+.ui.cards > .card, .ui.card {
+width: 18%;
+    min-width: 164px;
+    }
+</style>
+
+
+
+
+</head>
+<body style="height: 100%; overflow: hidden; padding-top: 0.1px;">
+
+
+	<div
+		style="float: left; height: 100%; background-color: #ce1316; color: #fff; position: relative;"
+		class="ui red inverted vertical pointing menu">
+
+		<h2 style="padding: 3%;">
+			<img th:src="@{/resources/imagens/logo.png}"
+				style="margin-bottom: -18px; margin-right: 17px; width: 60px; height: 60px;">DevFast
+		</h2>
+
+
+
+
+		<a class="item " th:href="@{cadastroRestaurante}"> Cadastrar
+			Restaurante </a> <a class="item" th:href="@{cadastroMotoboy}">
+			Cadastrar Motoboy </a> <a class="item " th:href="@{motoboys}">
+			Motoboys </a> <a class="item " th:href="@{admRestaurante}">
+			Restaurantes </a> <a class="item active" th:href="@{dash}"> Dashboard
+		</a> <a class="item " style="position: absolute; bottom: 0.4%;" th:href="@{../sair}"><i
+			style="margin-left: 149px;" class="sign out icon" ></i> Sair </a>
+
+
+	</div>
+
+
+
+
+
+
+
+
+	<div class="caixa"
+		style="height: 100%; overflow: scroll; overflow-x: hidden;" onload="">
+
+
+
+		<div class="ui link cards" style="margin-top: 11%; padding-left: 6%;"
+			th:object="${counts}">
+			<div class="card">
+				<h2 style="text-align: center; color: #ce1316;">Motoboys</h2>
+
+				<div class="ui image">
+					<img class="ui image" th:src="@{/resources/imagens/motoboy.png}"
+						style="background-color: #fff;">
+				</div>
+				<div class="ui statistic">
+					<div class="value" style="color: #ce1316;">
+						<span id="motoboysDash"></span>
+					</div>
+					<div class="label">Total</div>
+				</div>
+			</div>
+			<div class="card">
+				<h2 style="text-align: center; color: #ce1316;">Restaurantes</h2>
+				<div class="ui image">
+					<img class="ui image"
+						th:src="@{/resources/imagens/restaurante.png}"
+						style="background-color: #fff;">
+				</div>
+				<div class="ui statistic">
+					<div class="value" style="color: #ce1316;">
+
+						<span id="restauranteDash"></span>
+
+					</div>
+					<div class="label">Total</div>
+				</div>
+			</div>
+			<div class="card">
+				<h2 style="text-align: center; color: #ce1316;">Entregas
+					Realizadas</h2>
+				<div class="ui image">
+					<img class="ui image" th:src="@{/resources/imagens/aceita.png}"
+						style="background-color: #fff;">
+				</div>
+				<div class="ui statistic">
+					<div class="value" style="color: #ce1316;">
+
+						<span id="realizadasDash"></span>
+
+					</div>
+					<div class="label">Total</div>
+				</div>
+			</div>
+			<div class="card">
+				<h2 style="text-align: center; color: #ce1316;">Entregas
+					Recusadas</h2>
+				<div class="ui image">
+					<img class="ui image" th:src="@{/resources/imagens/recusada.png}"
+						style="background-color: #fff;">
+				</div>
+				<div class="ui statistic">
+					<div class="value" style="color: #ce1316;">
+
+						<span id="recusadasDash"></span>
+
+					</div>
+					<div class="label">Total</div>
+				</div>
+			</div>
+			<div class="card">
+				<h2 style="text-align: center; color: #ce1316;">Total de
+					Entregas</h2>
+				<div class="ui image">
+					<img class="ui image" th:src="@{/resources/imagens/total.png}"
+						style="background-color: #fff;">
+				</div>
+				<div class="ui statistic">
+					<div class="value" style="color: #ce1316;">
+
+						<span id="totalDash"></span>
+
+					</div>
+					<div class="label">Total</div>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<script type="text/javascript">
+		var motoboys;
+		var restaurantes;
+		var entregasRealizadas;
+		var entregasRecusadas;
+		var entregasTotal;
+
+		motoboys = document.getElementById('motoboysDash');
+		restaurantes = document.getElementById('restauranteDash');
+		entregasRealizadas = document.getElementById('realizadasDash');
+		entregasRecusadas = document.getElementById('recusadasDash');
+		entregasTotal = document.getElementById('totalDash');
+
+		fetch("http://192.168.3.13/FastDelivery/administrador/dadosDash").then(
+				function(resp) {
+					resp.json().then(function(json) {
+						motoboys.textContent = json[0];
+						restaurantes.textContent = json[1];
+						entregasRealizadas.textContent = json[2];
+						entregasRecusadas.textContent = json[3];
+						entregasTotal.textContent = json[4];
+					});
+				});
+	</script>
+
+</body>
+
+</html>
